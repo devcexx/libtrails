@@ -1,0 +1,4 @@
+name: ${project.artifactId}
+version: ${project.version}
+author: devcexx
+main: com.devcexx.libtrails.examples.colorful.ColorfulExample
