@@ -73,6 +73,87 @@ public class Particle {
         this.particleCountf = particleCountf;
     }
 
+    public Particle withEffect(Effect ef) {
+        return new Particle(ef, id, data, offx, offy, offz, offxf,
+                offyf, offzf, particleCount, particleCountf, speed, speedf, radius);
+    }
+
+    public Particle withId(int id) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, offzf, particleCount, particleCountf, speed,
+                speedf, radius);
+    }
+
+    public Particle withData(int data) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, offzf, particleCount, particleCountf, speed,
+                speedf, radius);
+    }
+
+    public Particle withOffsetX(float offx) {
+        return new Particle(effect, id, data, offx, offy, offz, null,
+                offyf, offzf, particleCount, particleCountf, speed, speedf, radius);
+    }
+
+    public Particle withOffsetX(Function<Integer, Float> fx) {
+        return new Particle(effect, id, data, offx, offy, offz, fx,
+                offyf, offzf, particleCount, particleCountf, speed,
+                speedf, radius);
+    }
+
+    public Particle withOffsetY(float offy) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                null, offzf, particleCount, particleCountf, speed,
+                speedf, radius);
+    }
+
+    public Particle withOffsetY(Function<Integer, Float> fy) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                fy, offzf, particleCount, particleCountf, speed,
+                speedf, radius);
+    }
+
+    public Particle withOffsetZ(float offz) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, null, particleCount, particleCountf, speed,
+                speedf, radius);
+    }
+
+    public Particle withOffsetZ(Function<Integer, Float> fz) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, fz, particleCount, particleCountf, speed, speedf, radius);
+    }
+
+    public Particle withSpeed(float speed) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, offzf, particleCount, particleCountf, speed,
+                null, radius);
+    }
+
+    public Particle withSpeed(Function<Integer, Float> speedf) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, offzf, particleCount, particleCountf, speed,
+                speedf, radius);
+    }
+
+    public Particle withCount(int n) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, offzf, n, null, speed,
+                speedf, radius);
+    }
+
+    public Particle withCount(Function<Integer, Integer> nf) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, offzf, particleCount, nf, speed,
+                speedf, radius);
+    }
+
+    public Particle withRadius(int radius) {
+        return new Particle(effect, id, data, offx, offy, offz, offxf,
+                offyf, offzf, particleCount, particleCountf, speed,
+                speedf, radius);
+    }
+
     public void spawn(Player p, Vector3 loc) {
         spawn(p, loc, 0);
     }
