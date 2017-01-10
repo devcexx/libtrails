@@ -1,0 +1,6 @@
+*.java text eol=lf encoding=utf-8
+*.xml text eol=lf encoding=utf-8
+*.yml text eol=lf encoding=utf-8
+LICENSE text eol=lf encoding=utf-8
+README.md text eol=lf encoding=utf-8
+*.png binary
