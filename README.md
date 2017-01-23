@@ -3,6 +3,8 @@ Little trails &amp; particles library for Spigot.
 
 This library contains utilities oriented to simplify the creation of trails and effects with particles in Spigot. This includes mathematical functions to work with vectors in the three-dimensional space and some kawaii predefined trails such as helix generators, sinusoidal waves, some shapes generators and even a image renderer with particles.
 
+It's important to note that this library is optimized for using it with the Java 8 Functional API (lambda expressions, streams, you know), so Java 8 is required to use this library.
+
 ## Usage
 
 First things first, you have to be clear about that **THIS IS NOT A SPIGOT PLUGIN**. This is just a utility library and, therefore, if you want to use it, you should shade it into your plugin final jar.
