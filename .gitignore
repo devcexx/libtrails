@@ -4,4 +4,4 @@
 server/
 *.iml
 pom.xml.versionsBackup
-dependency-reduce-pom.xml
+dependency-reduced-pom.xml
