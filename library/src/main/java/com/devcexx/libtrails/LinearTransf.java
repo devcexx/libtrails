@@ -16,6 +16,7 @@
 
 package com.devcexx.libtrails;
 
+import java.util.Vector;
 import java.util.function.Function;
 
 public abstract class LinearTransf {
@@ -38,6 +39,18 @@ public abstract class LinearTransf {
     }
 
     public static Function<Vector3, Vector3> rotateRenderPlane(Vector3 normal) {
+        //Gets the rotation axis of the transformation.
+        Vector3 axis = Vector3.AXIS_Y.cross(normal).normalize();
+        if (axis.equals(Vector3.ORIGIN)) {
+            if (Vector3.AXIS_Y.dot(normal) > 0) {
+                //Axis Y has the same direction as normal. Nothing to do
+                return v -> v;
+            } else {
+                //Axis Y is opposite to normal.
+                axis = Vector3.AXIS_Z;
+            }
+        }
+
         //Get normal vector on the XZ plane.
         Vector3 xzvector = normal.stripY();
 
@@ -47,7 +60,6 @@ public abstract class LinearTransf {
                 Vector3.AXIS_Y);
 
         //Gets the rotation axis of the transformation.
-        Vector3 axis = Vector3.AXIS_Y.cross(normal);
         float angle = (float) normal.angle(Vector3.AXIS_Y);
 
         //First rotation: rotates the point around the y axis
@@ -57,6 +69,7 @@ public abstract class LinearTransf {
         //Second rotation: rotates the point around the axis of the
         //rotation between the Y axis and the new normal axis, to place
         //the drawing inside the plane.
-        return v -> v.rotateY(yAngle + (float) Math.PI).rotate(axis, angle);
+        Vector3 faxis = axis;
+        return v -> v.rotateY(yAngle + (float) Math.PI).rotate(faxis, angle);
     }
 }
