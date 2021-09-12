@@ -19,7 +19,7 @@
     <modules>
         <module>libtrails-example-basic</module>
         <module>libtrails-example-skin-gadget</module>
-        <module>librtrails-example-colorful</module>
+        <module>libtrails-example-colorful</module>
     </modules>
 
     <build>
