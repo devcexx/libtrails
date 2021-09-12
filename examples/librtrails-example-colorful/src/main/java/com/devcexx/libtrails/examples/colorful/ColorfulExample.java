@@ -36,19 +36,19 @@ import java.util.Map;
 public class ColorfulExample extends JavaPlugin implements Listener {
 
     private final Map<Entity, EntityTrail> trails = new HashMap<>();
-    private final Particle particle = Particle.a()
-            .withEffect(Effect.COLOURED_DUST)
-            .withCount(0)
-            .withSpeed(1.0f)
-            .withOffsetX(this::tickToColor)
+    private final Particle particle = Particle.builder()
+            .effect(Effect.COLOURED_DUST)
+            .count(0)
+            .speed(1.0f)
+            .offsetX(this::tickToColor)
 
             /* Both Green and Blue components follows the same Piecewise as the
              * Red channel, with shifted to the right.
              */
-            .withOffsetY(t -> tickToColor(t + 256))
-            .withOffsetZ(t -> tickToColor(t + 512))
-            .withRadius(120)
-            .z();
+            .offsetY(t -> tickToColor(t + 256))
+            .offsetZ(t -> tickToColor(t + 512))
+            .radius(120)
+            .build();
 
 
     private float tickToColor(int tick) {

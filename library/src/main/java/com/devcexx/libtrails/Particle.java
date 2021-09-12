@@ -16,6 +16,10 @@
 
 package com.devcexx.libtrails;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.With;
+import lombok.experimental.Tolerate;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,119 +27,57 @@ import org.bukkit.entity.Player;
 
 import java.util.function.Function;
 
+@With
+@Builder
+@AllArgsConstructor
 public class Particle {
     private final Effect effect;
     private final int id;
     private final int data;
 
-    private final Object offx;
-    private final Object offy;
-    private final Object offz;
+    private final Function<Integer, Float> offsetX;
+    private final Function<Integer, Float> offsetY;
+    private final Function<Integer, Float> offsetZ;
 
-    private final Object speed;
-    private final Object particleCount;
+    private final Function<Integer, Float> speed;
+    private final Function<Integer, Integer> count;
     private final int radius;
 
-    public static Builder a() {
-        return new Builder();
-    }
-
-    public Particle(Effect effect, int id, int data, Object offx,
-                       Object offy, Object offz, Object particleCount,
-                    Object speed, int radius){
-        this.effect = effect;
-        this.id = id;
-        this.data = data;
-
-        this.speed = speed;
-        this.particleCount = particleCount;
-        this.radius = radius;
-
-        this.offx = offx;
-        this.offy = offy;
-        this.offz = offz;
-    }
-
-    public Particle withEffect(Effect ef) {
-        return new Particle(ef, id, data, offx, offy, offz,
-                particleCount, speed, radius);
-    }
-
-    public Particle withId(int id) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speed, radius);
-    }
-
-    public Particle withData(int data) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speed, radius);
-    }
-
-    public Particle withOffset(float offx, float offy, float offz) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speed, radius);
+    public Particle withOffset(float offX, float offY, float offZ) {
+        return new Particle(effect, id, data, (tick) -> offX, (tick) -> offY, (tick) -> offZ,
+                speed, count, radius);
     }
 
     public Particle withOffset(Function<Integer, Float> fx,
                                Function<Integer, Float> fy,
                                Function<Integer, Float> fz) {
         return new Particle(effect, id, data, fx, fy, fz,
-                particleCount, speed, radius);
+                speed, count, radius);
     }
 
-    public Particle withOffsetX(float offx) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speed, radius);
+    @Tolerate
+    public Particle withOffsetX(float offX) {
+        return withOffsetX((tick) -> offX);
     }
 
-    public Particle withOffsetX(Function<Integer, Float> fx) {
-        return new Particle(effect, id, data, fx, offy, offz,
-                particleCount, speed, radius);
+    @Tolerate
+    public Particle withOffsetY(float offY) {
+        return withOffsetY((tick) -> offY);
     }
 
-    public Particle withOffsetY(float offy) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speed, radius);
+    @Tolerate
+    public Particle withOffsetZ(float offZ) {
+        return withOffsetZ((tick) -> offZ);
     }
 
-    public Particle withOffsetY(Function<Integer, Float> fy) {
-        return new Particle(effect, id, data, offx, fy, offz,
-                particleCount, speed, radius);
-    }
-
-    public Particle withOffsetZ(float offz) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speed, radius);
-    }
-
-    public Particle withOffsetZ(Function<Integer, Float> fz) {
-        return new Particle(effect, id, data, offx, offy, fz,
-                particleCount, speed, radius);
-    }
-
+    @Tolerate
     public Particle withSpeed(float speed) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speed, radius);
+        return withSpeed((tick) -> speed);
     }
 
-    public Particle withSpeed(Function<Integer, Float> speedf) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speedf, radius);
-    }
-
-    public Particle withCount(int n) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                n, speed, radius);
-    }
-
-    public Particle withCount(Function<Integer, Integer> nf) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                nf, speed, radius);
-    }
-
-    public Particle withRadius(int radius) {
-        return new Particle(effect, id, data, offx, offy, offz,
-                particleCount, speed, radius);
+    @Tolerate
+    public Particle withCount(int count) {
+        return withCount((tick) -> count);
     }
 
     public void spawn(Player p, Vector3 loc) {
@@ -171,21 +113,11 @@ public class Particle {
     }
 
     private void spawn0(Object o, Location loc, int tick) {
-        float offx = ((Number) (this.offx instanceof Function ?
-                ((Function)this.offx).apply(tick) : this.offx)).floatValue();
-
-        float offy = ((Number) (this.offy instanceof Function ?
-                ((Function)this.offy).apply(tick) : this.offy)).floatValue();
-
-        float offz = ((Number) (this.offz instanceof Function ?
-                ((Function)this.offz).apply(tick) : this.offz)).floatValue();
-
-        float speed = ((Number) (this.speed instanceof Function ?
-                ((Function)this.speed).apply(tick) : this.speed)).floatValue();
-
-        int n = ((Number) (this.particleCount instanceof Function ?
-                ((Function)this.particleCount).apply(tick) :
-                this.particleCount)).intValue();
+        float offx = this.offsetX.apply(tick);
+        float offy = this.offsetY.apply(tick);
+        float offz = this.offsetZ.apply(tick);
+        float speed = this.speed.apply(tick);
+        int n = this.count.apply(tick);
 
         if (o instanceof Player) {
             ((Player)o).spigot().playEffect(loc, effect, id, data,
@@ -196,95 +128,38 @@ public class Particle {
         }
     }
 
-    public static class Builder {
-
-        private Effect effect;
-        private int id;
-        private int data;
-
-        private Object offx;
-        private Object offy;
-        private Object offz;
-
-        private Object speed;
-        private Object particleCount;
-        private int radius;
-
-        public Builder withEffect(Effect ef) {
-            this.effect = ef;
-            return this;
+    public static class ParticleBuilder {
+        public ParticleBuilder() {
+            this.offsetX = (tick) -> 0.0f;
+            this.offsetY = (tick) -> 0.0f;
+            this.offsetZ = (tick) -> 0.0f;
+            this.speed = (tick) -> 0.0f;
+            this.count = (tick) -> 1;
         }
 
-        public Builder withId(int id) {
-            this.id = id;
-            return this;
+        @Tolerate
+        public ParticleBuilder offsetX(float offsetX) {
+            return offsetX((tick) -> offsetX);
         }
 
-        public Builder withData(int data) {
-            this.data = data;
-            return this;
+        @Tolerate
+        public ParticleBuilder offsetY(float offsetY) {
+            return offsetY((tick) -> offsetY);
         }
 
-        public Builder withOffsetX(float offx) {
-            this.offx = offx;
-            return this;
+        @Tolerate
+        public ParticleBuilder offsetZ(float offsetZ) {
+            return offsetZ((tick) -> offsetZ);
         }
 
-        public Builder withOffsetX(Function<Integer, Float> fx) {
-            this.offx = fx;
-            return this;
+        @Tolerate
+        public ParticleBuilder speed(float speed) {
+            return speed((tick) -> speed);
         }
 
-        public Builder withOffsetY(float offy) {
-            this.offy = offy;
-            return this;
-        }
-
-        public Builder withOffsetY(Function<Integer, Float> fy) {
-            this.offy = fy;
-            return this;
-        }
-
-        public Builder withOffsetZ(float offz) {
-            this.offz = offz;
-            return this;
-        }
-
-        public Builder withOffsetZ(Function<Integer, Float> fz) {
-            this.offz = fz;
-            return this;
-        }
-
-        public Builder withSpeed(float speed) {
-            this.speed = speed;
-            return this;
-        }
-
-        public Builder withSpeed(Function<Integer, Float> speedf) {
-            this.speed = speedf;
-            return this;
-        }
-
-        public Builder withCount(int n) {
-            this.particleCount = n;
-            return this;
-        }
-
-        public Builder withCount(Function<Integer, Integer> nf) {
-            this.particleCount = nf;
-            return this;
-        }
-
-        public Builder withRadius(int radius) {
-            this.radius = radius;
-            return this;
-        }
-
-        public Particle z() {
-            return new Particle(effect, id, data, offx, offy, offz,
-                    particleCount, speed, radius);
+        @Tolerate
+        public ParticleBuilder count(int count) {
+            return count((tick) -> count);
         }
     }
-
-
 }

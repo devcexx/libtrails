@@ -16,7 +16,6 @@
 
 package com.devcexx.libtrails;
 
-import java.util.Vector;
 import java.util.function.Function;
 
 public abstract class LinearTransf {

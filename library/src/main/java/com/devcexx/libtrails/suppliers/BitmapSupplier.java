@@ -135,14 +135,14 @@ public class BitmapSupplier implements ParticleSupplier {
                     float b = Math.max(0.001f, (argb & 0xFF) / 256.0f);
 
                     particles[index++] = new SuppliedParticle(
-                            Particle.a()
-                                    .withEffect(particleType)
-                                    .withRadius(visibilityRadius)
-                                    .withCount(0)
-                                    .withOffsetX(r)
-                                    .withOffsetY(g)
-                                    .withOffsetZ(b)
-                                    .withSpeed(1.0f).z(),
+                            Particle.builder()
+                                    .effect(particleType)
+                                    .radius(visibilityRadius)
+                                    .count(0)
+                                    .offsetX(r)
+                                    .offsetY(g)
+                                    .offsetZ(b)
+                                    .speed(1.0f).build(),
                             new Vector3(j * xdist - midw, 0, midh - (i * zdist))
                     );
                 }

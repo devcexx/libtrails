@@ -36,33 +36,31 @@ import java.util.Map;
 import java.util.Random;
 
 public class BasicExample extends JavaPlugin implements Listener {
-    private final Random random = new Random();
-
     private final Map<Entity, EntityTrail> trails = new HashMap<>();
     private final Particle[] particles = new Particle[] {
-            Particle.a()
-                    .withEffect(Effect.FIREWORKS_SPARK)
-                    .withOffsetX(0.0f)
-                    .withOffsetZ(0.0f)
-                    .withCount(3)
-                    .withRadius(120)
-                    .z(),
+            Particle.builder()
+                    .effect(Effect.FIREWORKS_SPARK)
+                    .offsetX(0.0f)
+                    .offsetZ(0.0f)
+                    .count(3)
+                    .radius(120)
+                    .build(),
 
-            Particle.a()
-                    .withEffect(Effect.FLAME)
-                    .withOffsetX(0.0f)
-                    .withOffsetZ(0.0f)
-                    .withCount(3)
-                    .withRadius(120)
-                    .z(),
+            Particle.builder()
+                    .effect(Effect.FLAME)
+                    .offsetX(0.0f)
+                    .offsetZ(0.0f)
+                    .count(3)
+                    .radius(120)
+                    .build(),
 
-            Particle.a()
-                    .withEffect(Effect.SMOKE)
-                    .withOffsetX(0.0f)
-                    .withOffsetZ(0.0f)
-                    .withCount(3)
-                    .withRadius(120)
-                    .z(),
+            Particle.builder()
+                    .effect(Effect.SMOKE)
+                    .offsetX(0.0f)
+                    .offsetZ(0.0f)
+                    .count(3)
+                    .radius(120)
+                    .build(),
     };
     @Override
     public void onEnable() {

@@ -16,6 +16,7 @@
 
 package com.devcexx.libtrails;
 
+import lombok.Data;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -30,6 +31,7 @@ import org.bukkit.util.Vector;
  *
  * @author devcexx
  */
+@Data
 public class Vector3 {
     /**
      * A final field that contains the null vector of the Euclidean space
@@ -563,11 +565,11 @@ public class Vector3 {
     }
 
     /**
-     * Returns the current vector as an arry of components.
+     * Returns the current vector as an array of components.
      * @return a float array of 3 items that contains the value of each
      * component x, y, z, respectively.
      */
-    public float[] tofloats(){
+    public float[] toFloats(){
         return new float[]{x, y, z};
     }
 
@@ -602,28 +604,5 @@ public class Vector3 {
      */
     public Location toLocation(World w, float pitch, float yaw){
         return new Location(w, x, y, z, yaw, pitch);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Vector3 vector3 = (Vector3) o;
-
-        return Float.compare(vector3.x, x) == 0 && Float.compare(vector3.y, y) == 0 && Float.compare(vector3.z, z) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (x != +0.0f ? Float.floatToIntBits(x) : 0);
-        result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
-        result = 31 * result + (z != +0.0f ? Float.floatToIntBits(z) : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "[" + x + "; " + y + "; " + z + "]";
     }
 }
